@@ -92,6 +92,21 @@ function createTweetElement(tweetdata) {
 }
 
 $(document).ready(function() {
+
+  var $form = $('.new-tweet form');
+  $form.on('submit', function (event) {
+    event.preventDefault()
+    console.log('Button clicked, performing ajax call...');
+    console.log($(this).serialize())
+    $.ajax({
+      url: '/tweets/',
+      method: 'POST',
+      data: $(this).serialize(),
+      success: function (response, status) {
+        console.log('Success: ', status);
+      }
+    });
+  });
   renderTweets(data)
 })
 
