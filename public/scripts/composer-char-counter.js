@@ -7,9 +7,9 @@ $(document).ready(function() {
     counter = $(this).siblings('.counter')
     counter.text(charsLeft)
     if (charsLeft < 0) {
-      counter.css({'color': 'red'})
+      counter.addClass("color-danger")
     } else {
-      counter.css({'color': 'black'})
+      counter.removeClass("color-danger")
     }
   })
 })

@@ -16,6 +16,8 @@
 
     <link rel="stylesheet" href="/styles/new-tweet.css" type="text/css" />
 
+    <link rel="stylesheet" href="/styles/font-awesome-4.7.0/css/font-awesome.min.css" type="text/css" />
+
     <!-- External JS -->
     <script type="text/javascript" src="/vendor/jquery-2.2.3.min.js"></script>
 
@@ -31,6 +33,14 @@
     <nav id="nav-bar">
       <img class="logo" src="/images/bird.png">
       <span class="header">Tweeter</span>
+      <div class="nav-buttons">
+        <span class="button pencil">
+          <i class="fa fa-pencil-square-o"></i>
+          Compose
+        </span>
+        <!-- <span class="button">Other</span>
+        <span class="button">Another</span> -->
+      <div>
     </nav>
 
     <!-- Page-specific (main) content here -->
@@ -42,7 +52,7 @@
       <br> -->
       <section class="new-tweet">
         <h2>Compose Tweet</h2>
-        <form action="/tweets/" method="post">
+        <form>
           <textarea name="text" placeholder="What are you humming about?"></textarea>
           <input type="submit" value="Tweet">
           <span class="counter">140</span>

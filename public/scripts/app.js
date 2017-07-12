@@ -67,7 +67,7 @@ function createTweetElement(tweetdata) {
   const { user, content, created_at } = tweetdata;
   // const { user: { avatars, name, handle }, content, created_at } = tweetdata;
   milliseconds = (Date.now() - created_at)
-  days = milliseconds / 1000 / 60 / 60 / 24
+  days = milliseconds / (1000 * 60 * 60 * 24)
   roundedDays = Math.floor(days)
   hours = (days - roundedDays) * 24
   roundedHours = Math.floor(hours)
@@ -112,6 +112,7 @@ $(document).ready(function() {
   loadTweets()
 
   var $form = $('.new-tweet form');
+
   $form.on('submit', function (event) {
     event.preventDefault()
     $textarea = $form.children("textarea")
@@ -133,10 +134,21 @@ $(document).ready(function() {
       success: function (response, status) {
         console.log('Success: ', status);
         loadTweets()
+
       }
     });
     $textarea.val("")
   });
+
+  $newTweetBox = $('.new-tweet')
+  $('#nav-bar').on('click', '.pencil', function(event) {
+    if ($newTweetBox.is(':hidden')) {
+      $newTweetBox.slideToggle()
+      $newTweetBox.find('textarea').focus()
+    } else {
+      $newTweetBox.slideToggle()
+    }
+  })
   //renderTweets(data)
 })
 
