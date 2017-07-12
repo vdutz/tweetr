@@ -53,7 +53,7 @@ var data = [
 
 function renderTweets(tweets) {
   tweets.forEach(function(item) {
-    createTweetElement(item).appendTo($("#tweetlog"));
+    createTweetElement(item).prependTo($("#tweetlog"));
   })
 }
 
@@ -67,7 +67,12 @@ function createTweetElement(tweetdata) {
   const { user, content, created_at } = tweetdata;
   // const { user: { avatars, name, handle }, content, created_at } = tweetdata;
   milliseconds = (Date.now() - created_at)
-  days = Math.floor(milliseconds / 1000 / 60 / 60 / 24)
+  days = milliseconds / 1000 / 60 / 60 / 24
+  roundedDays = Math.floor(days)
+  hours = (days - roundedDays) * 24
+  roundedHours = Math.floor(hours)
+  minutes = (hours - roundedHours) * 60
+  roundedMinutes = Math.floor(minutes)
 
   tweetString = `<article class="tweetpost">
           <header>
@@ -79,7 +84,7 @@ function createTweetElement(tweetdata) {
             ${escape(content.text)}
           </div>
           <footer>
-            <div class="timestamp">${days} days ago</div>
+            <div class="timestamp">${roundedDays} days ${roundedHours} hrs ${roundedMinutes} mins ago</div>
             <div class="icons">
               <img src="/images/flag.png">
               <img src="/images/arrows.png">
@@ -93,9 +98,32 @@ function createTweetElement(tweetdata) {
 
 $(document).ready(function() {
 
+  function loadTweets(){
+    $.ajax({
+      url: '/tweets/',
+      method: 'GET',
+      success: function(tweetsObject) {
+        $("#tweetlog").empty()
+        renderTweets(tweetsObject)
+      }
+    })
+  }
+
+  loadTweets()
+
   var $form = $('.new-tweet form');
   $form.on('submit', function (event) {
     event.preventDefault()
+    $textarea = $form.children("textarea")
+    $counter = $form.children(".counter")
+    if ($textarea.val() === "" || $textarea.val() === null) {
+      alert("You cannot post an empty tweet.")
+      return;
+    } else if ($counter.text() < 0) {
+      alert("You cannot post a tweet that is over 140 characters.")
+      return;
+    }
+
     console.log('Button clicked, performing ajax call...');
     console.log($(this).serialize())
     $.ajax({
@@ -104,9 +132,11 @@ $(document).ready(function() {
       data: $(this).serialize(),
       success: function (response, status) {
         console.log('Success: ', status);
+        loadTweets()
       }
     });
+    $textarea.val("")
   });
-  renderTweets(data)
+  //renderTweets(data)
 })
 
