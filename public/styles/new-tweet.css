@@ -107,7 +107,8 @@
   opacity: 1;
 }
 
-.tweetpost .icons img {
-  height: 20px;
-  width: 25px;
+.tweetpost .icons i {
+  font-size: 16px;
+  color: #66C5B7;
+  padding: 5px 0 0 10px;
 }

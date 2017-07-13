@@ -39,9 +39,9 @@ function createTweetElement(tweetdata) {
           <footer>
             <div class="timestamp">${roundedDays} days ${roundedHours} hrs ${roundedMinutes} mins ago</div>
             <div class="icons">
-              <img src="/images/flag.png">
-              <img src="/images/arrows.png">
-              <img src="/images/heart.png">
+              <i class="fa fa-flag"></i>
+              <i class="fa fa-retweet"></i>
+              <i class="fa fa-heart"></i>
             </div>
           </footer>
         </article>`
