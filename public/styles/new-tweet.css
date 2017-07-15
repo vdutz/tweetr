@@ -1,5 +1,4 @@
 .new-tweet, .registerbox, .loginbox {
-    /*width: 400px;*/
     background-color: #EEEEEE;
     margin: 0 auto 20px 0;
     border: 1px solid #D3D3D3;
@@ -78,10 +77,6 @@
 }
 
 .tweetpost footer {
-  /*font-size: 12px;
-  width: 100%;
-  background-color: white;
-  padding: 15px 20px 15px;*/
   display: flex;
   flex-direction: row;
 }
@@ -101,8 +96,6 @@
   justify-content: flex-end;
   display: flex;
   flex-direction: row;
-  /*opacity: 0.3;
-  transition: opacity 0.2s ease;*/
 }
 
 .tweetpost:hover .icons i {

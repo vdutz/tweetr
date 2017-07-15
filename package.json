@@ -16,9 +16,7 @@
     "cookie-session": "^2.0.0-beta.2",
     "express": "^4.13.4",
     "md5": "^2.1.0",
-    "mongodb": "^2.2.30",
-    "node-sass": "^4.5.3",
-    "node-sass-middleware": "^0.11.0"
+    "mongodb": "^2.2.30"
   },
   "devDependencies": {
     "nodemon": "^1.9.2"

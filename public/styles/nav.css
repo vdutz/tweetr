@@ -22,15 +22,12 @@
   line-height: 80px;
   padding-left: 10px;
   order: 2;
-  /*flex-grow: 1*/
 }
 
 #nav-bar .userstatus {
   line-height: 80px;
   font-size: 0.7em;
   margin-left: 20px;
-  /*width: 80px;
-  height: 80px;*/
   flex-grow: 1;
   order: 4;
 }
@@ -46,13 +43,11 @@
 }
 
 #nav-bar .nav-buttons .button {
-  /*font-size: 1em;*/
   color: #09A58D;
   background-color: #E7FDFF;
   line-height: 60px;
   margin: 10px;
   padding: 0 10px;
-  /*border: 1px solid #D3D3D3;*/
   border: 2px solid black;
   border-radius: 5px;
 }
@@ -75,6 +70,7 @@
   background-color: #FFFFFF;
   cursor: pointer;
 }
+
 .color-danger {
   color: red;
 }

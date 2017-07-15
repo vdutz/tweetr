@@ -2,7 +2,7 @@
 
 const mongo = require('mongodb')
 
-const userHelper    = require("../lib/util/user-helper")
+const userHelper = require("../lib/util/user-helper")
 
 // Simulates the kind of delay we see with network or filesystem operations
 const simulateDelay = require("./util/simulate-delay");
@@ -18,10 +18,10 @@ module.exports = function makeDataHelpers(db) {
       for (var i = 0; i < 6; i++) {
         myString += myArray[Math.floor(Math.random() * myArray.length)];
       }
-      console.log(myString)
       return myString;
     },
 
+    // Gets user's info from databse if logged in or creates random user info if not logged in
     getUserInfo: function(id, callback) {
       if (id) {
         db.collection("users").findOne({ "loginToken": id }, function (err, result) {
@@ -45,43 +45,39 @@ module.exports = function makeDataHelpers(db) {
       callback(null, true);
     },
 
-    // Get all tweets in 'db', sorted by newest first
+    // Gets all tweets in 'db', sorted by newest first
     getTweets: function(callback) {
       db.collection("tweets").find().toArray(callback);
-      // db.close();
     },
 
+    // Checks likes status of tweet.  Checks whether user is trying to like their own tweet and whether user has already liked that tweet
     checkLikes: function(id, email, callback) {
       id = mongo.ObjectId(id)
       db.collection("tweets").findOne({"_id": id}, function (err, result) {
         if (result.user.email === email) {
-          let code = 403
+          let code = 403. // Forbidden - cannot like your own tweet
           callback(null, code)
         } else {
-          // db.collection("tweets").findOne({"_id": id}, function (err, result) {
           let likesList = result.likes
           if (likesList.includes(email)) {
             let index = likesList.indexOf(email)
             likesList.splice(index, 1)
             db.collection("tweets").update({"_id": id}, {$set: {"likes" : likesList}});
-            let code = 202
+            let code = 202 // Success - likes will decrease by 1
             callback(null, code)
           } else {
             likesList.push(email)
             db.collection("tweets").update({"_id": id}, {$set: {"likes" : likesList}});
-            let code = 200
+            let code = 200 // Success - likes will increase by 1
             callback(null, code)
           }
-          // })
         }
       })
     },
 
-    // Update the tweet that is liked
+    // Updates the tweet that is liked
     updateLikes: function(id, newValue, callback) {
-      // console.log("TEST ID: ", id)
       id = mongo.ObjectId(id)
-      // let tweetToUpdate = db.collection("tweets").find(searchQuery)
       db.collection("tweets").update({"_id": id}, {$set: {"likes" : newValue}});
       callback(null, true);
     },
@@ -92,8 +88,8 @@ module.exports = function makeDataHelpers(db) {
       callback(null, true);
     },
 
+    // Checks whether user has entered a correct email and password
     checkUser: function(email, password, callback) {
-
       db.collection("users").find().toArray(function(err, users) {
         let emailInUsers = false
         let passwordCorrect = false
@@ -104,19 +100,18 @@ module.exports = function makeDataHelpers(db) {
               passwordCorrect = true;
             }
           }
-          console.log("EMAIL IN USERS: ", emailInUsers)
         })
         callback({"emailInUsers": emailInUsers, "passwordCorrect": passwordCorrect})
       })
-      // return {"emailInUsers": emailInUsers, "passwordCorrect": passwordCorrect}
-      // callback(null, true)
     },
 
+    // Logs the user in by adding a login-token to that user's database document
     loginUser: function(email, randomID, callback) {
       db.collection("users").update({"email": email}, {$set: {"loginToken" : randomID}});
       callback()
     },
 
+    // Logs the user out by removing the login-token in that user's database document
     logoutUser: function(loginID, callback) {
       db.collection("users").update({"loginToken": loginID}, {$set: {"loginToken" : ""}});
       callback()
