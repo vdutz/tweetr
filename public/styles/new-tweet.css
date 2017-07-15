@@ -1,23 +1,24 @@
-.new-tweet {
+.new-tweet, .registerbox, .loginbox {
     /*width: 400px;*/
     background-color: #EEEEEE;
-    margin: auto;
+    margin: 0 auto 20px 0;
     border: 1px solid #D3D3D3;
     border-radius: 5px;
     padding: 10px;
     overflow: hidden;
 }
 
-.new-tweet h2 {
+.new-tweet h2, .registerbox h2, .loginbox h2 {
   border-bottom: 1px solid black;
   margin: 0 0 20px;
 }
 
-.new-tweet textarea {
+.new-tweet textarea, .registerbox form, .loginbox form {
   width: 100%;
   display: block;
   margin-bottom: 3px;
   padding: 8px;
+  resize: none;
 }
 
 .new-tweet input {
@@ -99,11 +100,12 @@
   padding: 10px 20px 10px 0;
   justify-content: flex-end;
   display: flex;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  flex-direction: row;
+  /*opacity: 0.3;
+  transition: opacity 0.2s ease;*/
 }
 
-.tweetpost:hover .icons {
+.tweetpost:hover .icons i {
   opacity: 1;
 }
 
@@ -111,4 +113,16 @@
   font-size: 16px;
   color: #66C5B7;
   padding: 5px 0 0 10px;
+  opacity: 0.2;
+  transition: opacity 0.2s ease;
+}
+
+.tweetpost .icons i:hover {
+  cursor: pointer;
+  color: #0C6B71;
+}
+
+.tweetpost .icons i.liked {
+  opacity: 1;
+  color: red;
 }

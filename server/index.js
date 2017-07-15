@@ -4,10 +4,37 @@
 const PORT          = 8080;
 const express       = require("express");
 const bodyParser    = require("body-parser");
+const path          = require('path')
+const cookieSession        = require('cookie-session')
+// const sassMiddleware= require('node-sass-middleware');
 const app           = express();
 
+
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
+
+// app.use(
+//      sassMiddleware({
+//          src: path.join(__dirname, '../sass'), //where the sass files are
+//          dest: path.join(__dirname, '../public/styles'), //where css should go
+//          debug: true,
+//          outputStyle: 'compressed',
+//          error: function(err) {console.log(err)}
+//      })
+//  );
+
+// console.log(path.join(__dirname, '../sass'))
+// console.log(path.join(__dirname, '../public/styles'))
+// console.log(__dirname)
+
 app.use(express.static("public"));
+
+// app.use(express.static("public"), express.static("public/styles"));
+
 
 // Define the path to access the MongoDB database
 const {MongoClient} = require("mongodb");

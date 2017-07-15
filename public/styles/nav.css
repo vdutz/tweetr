@@ -9,7 +9,6 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-
 }
 
 #nav-bar .logo {
@@ -45,14 +44,13 @@
   /*border: 1px solid #D3D3D3;*/
   border: 2px solid black;
   border-radius: 5px;
-  /*z-index: 3*/
 }
 
 #nav-bar .nav-buttons .button:hover {
   color: black;
   background-color: #FFFFFF;
+  cursor: pointer;
 }
 .color-danger {
   color: red;
 }
-
