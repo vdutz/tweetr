@@ -22,7 +22,17 @@
   line-height: 80px;
   padding-left: 10px;
   order: 2;
-  flex-grow: 1
+  /*flex-grow: 1*/
+}
+
+#nav-bar .userstatus {
+  line-height: 80px;
+  font-size: 0.7em;
+  margin-left: 20px;
+  /*width: 80px;
+  height: 80px;*/
+  flex-grow: 1;
+  order: 4;
 }
 
 #nav-bar .nav-buttons {
@@ -30,6 +40,7 @@
   line-height: 80px;
   padding-left: 10px;
   order: 3;
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
 }
@@ -44,6 +55,19 @@
   /*border: 1px solid #D3D3D3;*/
   border: 2px solid black;
   border-radius: 5px;
+}
+
+#nav-bar .nav-buttons .button.compose {
+  margin-right: 60px;
+  margin-left: 60px;
+}
+
+#nav-bar .nav-buttons .button.register, #nav-bar .nav-buttons .button.login, #nav-bar .nav-buttons .button.logout {
+  font-size: 0.6em;
+  line-height: 20px;
+  color: #09A58D;
+  padding: 10px;
+  margin: 20px 10px;
 }
 
 #nav-bar .nav-buttons .button:hover {

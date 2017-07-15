@@ -24,28 +24,19 @@ module.exports = function makeDataHelpers(db) {
 
     getUserInfo: function(id, callback) {
       if (id) {
-        console.log("TEST - ID EXISTS")
         db.collection("users").findOne({ "loginToken": id }, function (err, result) {
           let user = {
             name: result.name,
             handle: result.handle,
-            avatars: result.avatars
+            avatars: result.avatars,
+            email: result.email
           }
           callback(null, user)
         })
       } else {
-        console.log("TEST - NO ID")
         let user = userHelper.generateRandomUser()
         callback(null, user)
       }
-      // db.collection("users").findOne({ "loginToken": id }, callback)
-      // console.log("TEST PRINT USER PROFILE: ", userProfile)
-      // callback(document)
-      // return {
-      //   name: "Vlad",
-      //   handle: userProfile.handle,
-      //   avatars: userProfile.avatars
-      // };
     },
 
     // Saves a tweet to 'db'
@@ -58,6 +49,32 @@ module.exports = function makeDataHelpers(db) {
     getTweets: function(callback) {
       db.collection("tweets").find().toArray(callback);
       // db.close();
+    },
+
+    checkLikes: function(id, email, callback) {
+      id = mongo.ObjectId(id)
+      db.collection("tweets").findOne({"_id": id}, function (err, result) {
+        if (result.user.email === email) {
+          let code = 403
+          callback(null, code)
+        } else {
+          // db.collection("tweets").findOne({"_id": id}, function (err, result) {
+          let likesList = result.likes
+          if (likesList.includes(email)) {
+            let index = likesList.indexOf(email)
+            likesList.splice(index, 1)
+            db.collection("tweets").update({"_id": id}, {$set: {"likes" : likesList}});
+            let code = 202
+            callback(null, code)
+          } else {
+            likesList.push(email)
+            db.collection("tweets").update({"_id": id}, {$set: {"likes" : likesList}});
+            let code = 200
+            callback(null, code)
+          }
+          // })
+        }
+      })
     },
 
     // Update the tweet that is liked

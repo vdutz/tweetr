@@ -25,12 +25,6 @@ module.exports = function(DataHelpers) {
     // let user
 
     DataHelpers.getUserInfo(req.session.loginID, function(err, user) {
-      // const user = {
-      //   name: "Vlad",
-      //   handle: result.handle,
-      //   avatars: result.avatars
-      // };
-      console.log("USER TEST: ", user)
 
       const tweet = {
         user: user,
@@ -38,7 +32,7 @@ module.exports = function(DataHelpers) {
           text: req.body.text
         },
         created_at: Date.now(),
-        likes: "FALS"
+        likes: []
       };
 
       DataHelpers.saveTweet(tweet, (err) => {
@@ -50,51 +44,30 @@ module.exports = function(DataHelpers) {
       });
 
     })
+  });
 
-    // if (req.session.loginID) {
-    //   console.log("Testing Session ID: ", req.session.loginID)
-    //   DataHelpers.getUserInfo(req.session.loginID, function(err, result) {
-    //     user = {
-    //       name: "Vlad",
-    //       handle: result.handle,
-    //       avatars: result.avatars
-    //     };
-    //     buildAndSaveTweet()
+  tweetsRoutes.put("/:tweetid/like/", function(req, res) {
 
-    //   })
-    //   // const user =
-    // } else {
-    //   user = userHelper.generateRandomUser()
-    //   buildAndSaveTweet()
-    // }
+    if (!req.session.loginID) {
+      res.status(401).send() // Unauthorizes - cannot like tweet if not logged in
+    } else {
+      let email = req.session.email
+      let tweetid = req.params.tweetid
 
-    // const user = req.body.user ? req.body.user : userHelper.generateRandomUser();
-    // const tweet = {
-    //   user: user,
-    //   content: {
-    //     text: req.body.text
-    //   },
-    //   created_at: Date.now(),
-    //   likes: "FALS"
-    // };
+      DataHelpers.checkLikes(tweetid, email, (err, code) => {
+        res.status(code).send()
+      })
+    }
 
-    // DataHelpers.saveTweet(tweet, (err) => {
+    // DataHelpers.updateLikes(tweetid, email, )
+
+    // DataHelpers.updateLikes(req.params.tweetid, "TRU", (err) =>{
     //   if (err) {
     //     res.status(500).json({ error: err.message });
     //   } else {
     //     res.status(201).send();
     //   }
-    // });
-  });
-
-  tweetsRoutes.put("/:tweetid/like/", function(req, res) {
-    DataHelpers.updateLikes(req.params.tweetid, "TRU", (err) =>{
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.status(201).send();
-      }
-    })
+    // })
   });
 
   tweetsRoutes.put("/:tweetid/unlike/", function(req, res) {
@@ -110,6 +83,7 @@ module.exports = function(DataHelpers) {
   tweetsRoutes.post("/register", function(req, res) {
     let randomID = DataHelpers.generateID()
     req.session.loginID = randomID
+    req.session.email = req.body.email
 
     const avatar = req.body.avatar
 
@@ -132,7 +106,7 @@ module.exports = function(DataHelpers) {
       if (err) {
         res.status(500).json({ error: err.message });
       } else {
-        res.status(201).send();
+        res.status(201).send(req.body.email);
       }
     })
   })
@@ -153,11 +127,12 @@ module.exports = function(DataHelpers) {
         console.log("Everything matched!")
         let randomID = DataHelpers.generateID() // check this later
         req.session.loginID = randomID
+        req.session.email = req.body.email
         DataHelpers.loginUser(email, randomID, (err) => {
           if (err) {
             res.status(500).json({ error: err.message });
           } else {
-            res.status(201).send();
+            res.status(201).send(email);
           }
         })
         // db.collection("users").update
