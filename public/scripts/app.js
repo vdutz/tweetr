@@ -57,6 +57,7 @@ function createTweetElement(tweetdata) {
 
 $(document).ready(function() {
 
+  // Function to load all the current tweets onto the webpage
   function loadTweets(){
     $.ajax({
       url: '/tweets/',
@@ -68,14 +69,16 @@ $(document).ready(function() {
     })
   }
 
+  // Load all current tweets
   loadTweets()
 
+  // When user submits a new tweet with the compose form:
   var $form = $('.new-tweet form');
-
   $form.on('submit', function (event) {
     event.preventDefault()
     $textarea = $form.children("textarea")
     $counter = $form.children(".counter")
+    // Error checking user's tweet
     if ($textarea.val() === "" || $textarea.val() === null) {
       alert("You cannot post an empty tweet.")
       return;
@@ -85,7 +88,7 @@ $(document).ready(function() {
     }
 
     console.log('Button clicked, performing ajax call...');
-    // console.log("Submit test: ", $(this).serialize())
+    // Making a post request to create a new tweet in the database
     $.ajax({
       url: '/tweets/',
       method: 'POST',
@@ -99,9 +102,11 @@ $(document).ready(function() {
     $textarea.val("")
   });
 
+  // When user submits registration info with the registration form
   var $registerForm = $('.registerbox form')
   $registerForm.on('submit', function (event) {
     event.preventDefault()
+    //Making a post request to create a new user in the database
     $.ajax({
       url: '/tweets/register',
       method: 'POST',
@@ -113,12 +118,14 @@ $(document).ready(function() {
     });
   })
 
+  // When user submits login info with the login form
   var $loginForm = $('.loginbox form')
   $loginForm.on('submit', function (event) {
     event.preventDefault()
+    // Making a put request to change the user's status to logged in
     $.ajax({
       url: '/tweets/login',
-      method: 'POST',
+      method: 'PUT',
       data: $(this).serialize(),
       success: function (response, status) {
         console.log('Login status: ', status);
@@ -127,38 +134,66 @@ $(document).ready(function() {
     });
   })
 
+  // When user clicks on the "Logout" button
   $('#nav-bar .logout').on('click', function (event) {
+    // Making a put request to change the user's status to logged out
     $.ajax({
       url: '/tweets/logout',
       method: 'PUT',
       // data: $(this).serialize(),
       success: function (response, status) {
         console.log('Logout status: ', status);
-        // $('.registerbox').slideToggle()
       }
     });
   })
 
-  $newTweetBox = $('.new-tweet')
+  $composeBox = $('.new-tweet')
+  $registerBox = $('.registerbox')
+  $loginBox = $('.loginbox')
+
+  //The registration and login boxes are hidden on webpage startup
+  $registerBox.hide()
+  $loginBox.hide()
+
+  // When user clicks the "Compose" button:
   $('#nav-bar').on('click', '.compose', function(event) {
-    if ($newTweetBox.is(':hidden')) {
-      $newTweetBox.slideToggle()
-      $newTweetBox.find('textarea').focus()
+    if ($composeBox.is(':hidden')) {
+      $composeBox.slideToggle()
+      $composeBox.find('textarea').focus()
     } else {
-      $newTweetBox.slideToggle()
+      $composeBox.slideToggle()
+    }
+    if (!$registerBox.is(':hidden')) {
+      $registerBox.slideToggle()
+    }
+    if (!$loginBox.is(':hidden')) {
+      $loginBox.slideToggle()
     }
   })
 
-  $registerBox = $('.registerbox')
+  // When user clicks the "Register" button:
   $('#nav-bar').on('click', '.register', function(event) {
     $registerBox.slideToggle()
+    if (!$composeBox.is(':hidden')) {
+      $composeBox.slideToggle()
+    }
+    if (!$loginBox.is(':hidden')) {
+      $loginBox.slideToggle()
+    }
   })
 
-  $loginBox = $('.loginbox')
+  // When user clicks the "Login" button:
   $('#nav-bar').on('click', '.login', function(event) {
     $loginBox.slideToggle()
+    if (!$composeBox.is(':hidden')) {
+      $composeBox.slideToggle()
+    }
+    if (!$registerBox.is(':hidden')) {
+      $registerBox.slideToggle()
+    }
   })
 
+  // When a user clicks the like/heart button:
   $tweetlog = $('#tweetlog')
   $tweetlog.on('click', '.tweetpost .icons .fa-heart', function(event) {
 
@@ -168,6 +203,7 @@ $(document).ready(function() {
       $(this).data("likes", "FALS")
       $(this).removeClass('liked')
       // console.log("Test 2:", $(this).attr("class"));
+      // Making a put request to change the tweet's status to not-liked
       $.ajax({
         url: `/tweets/${tweetid}/unlike/`,
         method: 'PUT',
@@ -182,6 +218,7 @@ $(document).ready(function() {
       $(this).data("likes", "TRU")
       $(this).addClass('liked')
       // console.log("Test 1:", $(this).attr("class"));
+      // Making a put request to change the tweet's status to liked
       $.ajax({
         url: `/tweets/${tweetid}/like/`,
         method: 'PUT',
@@ -194,6 +231,5 @@ $(document).ready(function() {
     }
 
   })
-  //renderTweets(data)
 })
 

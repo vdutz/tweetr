@@ -80,7 +80,7 @@ module.exports = function(DataHelpers) {
     })
   })
 
-  tweetsRoutes.post("/login", function(req, res) {
+  tweetsRoutes.put("/login", function(req, res) {
     // Check if email entered is in user database
     let email = req.body.email
     let password = req.body.password
