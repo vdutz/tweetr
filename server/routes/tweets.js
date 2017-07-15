@@ -22,24 +22,69 @@ module.exports = function(DataHelpers) {
       res.status(400).json({ error: 'invalid request: no data in POST body'});
       return;
     }
+    // let user
 
-    const user = req.body.user ? req.body.user : userHelper.generateRandomUser();
-    const tweet = {
-      user: user,
-      content: {
-        text: req.body.text
-      },
-      created_at: Date.now(),
-      likes: "FALS"
-    };
+    DataHelpers.getUserInfo(req.session.loginID, function(err, user) {
+      // const user = {
+      //   name: "Vlad",
+      //   handle: result.handle,
+      //   avatars: result.avatars
+      // };
+      console.log("USER TEST: ", user)
 
-    DataHelpers.saveTweet(tweet, (err) => {
-      if (err) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.status(201).send();
-      }
-    });
+      const tweet = {
+        user: user,
+        content: {
+          text: req.body.text
+        },
+        created_at: Date.now(),
+        likes: "FALS"
+      };
+
+      DataHelpers.saveTweet(tweet, (err) => {
+        if (err) {
+          res.status(500).json({ error: err.message });
+        } else {
+          res.status(201).send();
+        }
+      });
+
+    })
+
+    // if (req.session.loginID) {
+    //   console.log("Testing Session ID: ", req.session.loginID)
+    //   DataHelpers.getUserInfo(req.session.loginID, function(err, result) {
+    //     user = {
+    //       name: "Vlad",
+    //       handle: result.handle,
+    //       avatars: result.avatars
+    //     };
+    //     buildAndSaveTweet()
+
+    //   })
+    //   // const user =
+    // } else {
+    //   user = userHelper.generateRandomUser()
+    //   buildAndSaveTweet()
+    // }
+
+    // const user = req.body.user ? req.body.user : userHelper.generateRandomUser();
+    // const tweet = {
+    //   user: user,
+    //   content: {
+    //     text: req.body.text
+    //   },
+    //   created_at: Date.now(),
+    //   likes: "FALS"
+    // };
+
+    // DataHelpers.saveTweet(tweet, (err) => {
+    //   if (err) {
+    //     res.status(500).json({ error: err.message });
+    //   } else {
+    //     res.status(201).send();
+    //   }
+    // });
   });
 
   tweetsRoutes.put("/:tweetid/like/", function(req, res) {
@@ -65,7 +110,19 @@ module.exports = function(DataHelpers) {
   tweetsRoutes.post("/register", function(req, res) {
     let randomID = DataHelpers.generateID()
     req.session.loginID = randomID
+
+    const avatar = req.body.avatar
+
+    const avatars = {
+      small:   avatar,
+      regular: avatar.replace("_50.png", ".png"),
+      large:   avatar.replace("_50.png", "_200.png")
+    }
+
     const user =  {
+      name: req.body.name,
+      handle: req.body.handle,
+      avatars: avatars,
       email: req.body.email,
       password: req.body.password,
       loginToken: randomID

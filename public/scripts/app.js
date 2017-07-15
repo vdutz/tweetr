@@ -18,7 +18,6 @@ function escape(str) {
 
 function createTweetElement(tweetdata) {
   const { user, content, created_at, _id, likes } = tweetdata;
-  // const { user: { avatars, name, handle }, content, created_at } = tweetdata;
   if (likes == "TRU") {
     redclass = " liked"
   } else {
@@ -32,6 +31,8 @@ function createTweetElement(tweetdata) {
   roundedHours = Math.floor(hours)
   minutes = (hours - roundedHours) * 60
   roundedMinutes = Math.floor(minutes)
+
+  // <img src="${escape(user.avatars.small)}">
 
   tweetString = `<article data-id="${_id}" class="tweetpost">
           <header>

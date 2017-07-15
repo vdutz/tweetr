@@ -2,6 +2,8 @@
 
 const mongo = require('mongodb')
 
+const userHelper    = require("../lib/util/user-helper")
+
 // Simulates the kind of delay we see with network or filesystem operations
 const simulateDelay = require("./util/simulate-delay");
 
@@ -18,6 +20,32 @@ module.exports = function makeDataHelpers(db) {
       }
       console.log(myString)
       return myString;
+    },
+
+    getUserInfo: function(id, callback) {
+      if (id) {
+        console.log("TEST - ID EXISTS")
+        db.collection("users").findOne({ "loginToken": id }, function (err, result) {
+          let user = {
+            name: result.name,
+            handle: result.handle,
+            avatars: result.avatars
+          }
+          callback(null, user)
+        })
+      } else {
+        console.log("TEST - NO ID")
+        let user = userHelper.generateRandomUser()
+        callback(null, user)
+      }
+      // db.collection("users").findOne({ "loginToken": id }, callback)
+      // console.log("TEST PRINT USER PROFILE: ", userProfile)
+      // callback(document)
+      // return {
+      //   name: "Vlad",
+      //   handle: userProfile.handle,
+      //   avatars: userProfile.avatars
+      // };
     },
 
     // Saves a tweet to 'db'
