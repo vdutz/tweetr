@@ -82,7 +82,6 @@ module.exports = function(DataHelpers) {
 
   tweetsRoutes.post("/login", function(req, res) {
     // Check if email entered is in user database
-    console.log("TEST EMAIL: ", req.body.email)
     let email = req.body.email
     let password = req.body.password
 
@@ -97,9 +96,16 @@ module.exports = function(DataHelpers) {
         console.log("Everything matched!")
         let randomID = DataHelpers.generateID() // check this later
         req.session.loginID = randomID
+        DataHelpers.loginUser(email, randomID, (err) => {
+          if (err) {
+            res.status(500).json({ error: err.message });
+          } else {
+            res.status(201).send();
+          }
+        })
         // db.collection("users").update
         // item.loginToken = randomID
-        res.status(201).send();
+        // res.status(201).send();
       }
     })
     // console.log("EMAIL in USERS: ", object.emailInUsers)
@@ -129,12 +135,19 @@ module.exports = function(DataHelpers) {
   })
 
   tweetsRoutes.put("/logout", function(req, res) {
-    // console.log(req.session.loginID)
+    console.log(req.session.loginID)
+    let loginID = req.session.loginID
+    DataHelpers.logoutUser(loginID, (err) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        req.session = null
+        res.status(201).send();
+      }
+    })
 
-    // DataHelpers.logoutUser()
-
-    req.session = null
-    res.status(201).send();
+    // req.session = null
+    // res.status(201).send();
   })
 
   return tweetsRoutes;

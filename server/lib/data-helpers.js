@@ -53,25 +53,28 @@ module.exports = function makeDataHelpers(db) {
         let emailInUsers = false
         let passwordCorrect = false
         users.forEach(function(item) {
-          console.log(item.email)
-          console.log(email)
-          // ID = item._id
           if (email == item.email) {
             emailInUsers = true;
             if (password == item.password) {
               passwordCorrect = true;
             }
           }
-          console.log("EMAIL IN USERS 2: ", emailInUsers)
+          console.log("EMAIL IN USERS: ", emailInUsers)
         })
         callback({"emailInUsers": emailInUsers, "passwordCorrect": passwordCorrect})
       })
       // return {"emailInUsers": emailInUsers, "passwordCorrect": passwordCorrect}
       // callback(null, true)
-    }
+    },
 
-    // logoutUser: function(XXX) {
-    //   db.collection("users")
-    // }
+    loginUser: function(email, randomID, callback) {
+      db.collection("users").update({"email": email}, {$set: {"loginToken" : randomID}});
+      callback()
+    },
+
+    logoutUser: function(loginID, callback) {
+      db.collection("users").update({"loginToken": loginID}, {$set: {"loginToken" : ""}});
+      callback()
+    }
   }
 }
