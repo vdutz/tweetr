@@ -4,10 +4,10 @@ Tweeter is a simple, single-page Twitter clone.
 
 ## Final Product
 
-!["Registration form"](#)
-!["Login form"](#)
-!["Composing a post"](#)
-!["Browsing view"](#)
+!["Registration form"](https://github.com/vdutz/tweetr/blob/master/docs/registration-form.png?raw=true)
+!["Login form"](https://github.com/vdutz/tweetr/blob/master/docs/login-form.png?raw=true)
+!["Composing a post"](https://github.com/vdutz/tweetr/blob/master/docs/composing-tweet.png?raw=true)
+!["Browsing view"](https://github.com/vdutz/tweetr/blob/master/docs/browse-view.png?raw=true)
 
 
 ## Dependencies
