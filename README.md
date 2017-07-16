@@ -11,7 +11,7 @@ Tweeter is a simple, single-page Twitter clone.
 
 ### Login Form
 
-!["Login form"](https://github.com/vdutz/tweetr/blob/master/docs/login-form.png?raw=true)
+!["Login form"](https://github.com/vdutz/tweetr/blob/master/docs/login-form2.png?raw=true)
 
 ### Composing a Post
 
@@ -19,7 +19,7 @@ Tweeter is a simple, single-page Twitter clone.
 
 ### Browsing View
 
-!["Browsing view"](https://github.com/vdutz/tweetr/blob/master/docs/browse-view.png?raw=true)
+!["Browsing view"](https://github.com/vdutz/tweetr/blob/master/docs/browsing-view2.png?raw=true)
 
 
 ## Dependencies
