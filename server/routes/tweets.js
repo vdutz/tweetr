@@ -95,9 +95,9 @@ module.exports = function(DataHelpers) {
 
     DataHelpers.checkUser(email, password, function(object, db) {
       if (!object.emailInUsers) {
-        res.status(403).send("Your email address does not match our records");
+        res.status(401).send();
       } else if (object.passwordCorrect === false) {
-        res.status(403).send("Your password does not match your email address.");
+        res.status(403).send();
       } else {
         let randomID = DataHelpers.generateID();
         req.session.loginID = randomID;

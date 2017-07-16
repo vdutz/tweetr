@@ -144,6 +144,12 @@ $(document).ready(function() {
         $('#nav-bar .login').hide();
         $('#nav-bar .register').hide();
         $('#nav-bar .logout').show();
+      },
+      error: function (xhr, textStatus) {
+        if (xhr.status === 401) {
+          alert("Your email address does not match our records.")
+        } else if (xhr.status === 401)
+          alert("Your password does not match your email address.")
       }
     });
   })
@@ -248,8 +254,6 @@ $(document).ready(function() {
         }
       },
       error: function (xhr, textStatus) {
-        console.log('Like status: ', textStatus);
-        console.log('Code: ', xhr.status);
         if (xhr.status === 401) {
           alert("You cannot like a tweet if you are not logged in.");
         } else if (xhr.status === 403) {
